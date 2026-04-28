@@ -8,12 +8,10 @@
 * {margin:0; padding:0; box-sizing:border-box;}
 body {background:#f3f3f3; font-family:"微软雅黑",sans-serif;}
 
-/* 顶部空白缩小 */
 .header {text-align:center; padding:10px 0;}
 .header h1 {font-size:20px; margin-bottom:4px;}
 .header .domain {font-size:13px; color:#666;}
 
-/* 卡片紧凑 */
 .card {
     background:#fff;
     margin:10px 15px 0;
@@ -115,7 +113,8 @@ body {background:#f3f3f3; font-family:"微软雅黑",sans-serif;}
     <div class="en">Please input the code or scan the QR code to check the authenticity</div>
 
     <div class="input-wrap">
-        <input type="text" id="codeInput" placeholder="请在此输入防伪密码" maxlength="12">
+        <!-- 只能输数字 -->
+        <input type="number" id="codeInput" oninput="onlyNumber()" placeholder="请在此输入防伪密码" maxlength="12">
         <button id="submitBtn">确定</button>
     </div>
 
@@ -145,10 +144,17 @@ function $(id){return document.getElementById(id);}
 function closeModal(){$("modal").style.display="none";}
 function showMsg(t){$("msg").innerText=t; $("modal").style.display="flex";}
 
-// 从二维码里获取当前正确验证码（强绑定！）
-const urlParams = new URLSearchParams(location.search);
-const REAL_CODE = urlParams.get("code");
+// 强制只能输入数字
+function onlyNumber() {
+    let val = $("codeInput").value;
+    $("codeInput").value = val.replace(/[^0-9]/g, "");
+}
 
+// 获取二维码里的真实正确验证码
+const urlParams = new URLSearchParams(location.search);
+const REAL_CODE = urlParams.get("code") || "";
+
+// 查询逻辑
 $("submitBtn").onclick = function(){
     let input = $("codeInput").value.trim();
 
@@ -157,15 +163,12 @@ $("submitBtn").onclick = function(){
         return;
     }
 
-    // 【强验证：直接和二维码里的真实码对比】
     if(input === REAL_CODE){
-        // 第一次查询
         $("queryCard").style.display = "none";
         $("resultCard").style.display = "block";
         $("showCode").innerText = input;
         $("resultText").innerText = "您查询的防伪编码为正品，当前第1次查询。";
-    } else {
-        // 错误
+    }else{
         $("queryCard").style.display = "none";
         $("resultCard").style.display = "block";
         $("showCode").innerText = input;
