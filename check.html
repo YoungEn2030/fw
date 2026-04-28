@@ -21,7 +21,6 @@ body {background:#f3f3f3; font-family:"微软雅黑",sans-serif;}
     padding:20px 15px;
 }
 .card h2 {font-size:17px; margin-bottom:6px;}
-/* 英文缩小、紧凑 */
 .card .en {
     font-size:11px;
     color:#666;
@@ -85,10 +84,8 @@ body {background:#f3f3f3; font-family:"微软雅黑",sans-serif;}
 #resultText {
     font-size:15px;
     line-height:1.8;
-    white-space: pre-line;
 }
 
-/* 弹窗 */
 .modal {
     display:none;
     position:fixed;
@@ -148,12 +145,9 @@ function $(id){return document.getElementById(id);}
 function closeModal(){$("modal").style.display="none";}
 function showMsg(t){$("msg").innerText=t; $("modal").style.display="flex";}
 
-// 强制读取数据库，确保一定读到
-let db = JSON.parse(localStorage.getItem("antiFakeDB") || "{}");
-console.log("当前数据库：", db);
-
-// 只读取不自动填充
-let qrCode = new URLSearchParams(location.search).get("code");
+// 从二维码里获取当前正确验证码（强绑定！）
+const urlParams = new URLSearchParams(location.search);
+const REAL_CODE = urlParams.get("code");
 
 $("submitBtn").onclick = function(){
     let input = $("codeInput").value.trim();
@@ -163,30 +157,19 @@ $("submitBtn").onclick = function(){
         return;
     }
 
-    // 强制刷新数据库（最关键！）
-    db = JSON.parse(localStorage.getItem("antiFakeDB") || "{}");
-
-    if(!db[input]){
+    // 【强验证：直接和二维码里的真实码对比】
+    if(input === REAL_CODE){
+        // 第一次查询
+        $("queryCard").style.display = "none";
+        $("resultCard").style.display = "block";
+        $("showCode").innerText = input;
+        $("resultText").innerText = "您查询的防伪编码为正品，当前第1次查询。";
+    } else {
+        // 错误
         $("queryCard").style.display = "none";
         $("resultCard").style.display = "block";
         $("showCode").innerText = input;
         $("resultText").innerText = "您所查询的防伪码不存在，未经官方验证，请谨慎购买。";
-        return;
-    }
-
-    // 一定能走到这里
-    db[input].queryCount++;
-    if(db[input].status === "new") db[input].status = "used";
-    localStorage.setItem("antiFakeDB", JSON.stringify(db));
-
-    $("queryCard").style.display = "none";
-    $("resultCard").style.display = "block";
-    $("showCode").innerText = input;
-
-    if(db[input].queryCount === 1){
-        $("resultText").innerText = "您查询的防伪编码为正品，当前第1次查询。";
-    }else{
-        $("resultText").innerText = `您查询的防伪编码为正品，当前第${db[input].queryCount}次查询，请确保第一次查询为本人操作，若非本人操作，产品可能为假冒商品。`;
     }
 };
 </script>
