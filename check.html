@@ -6,23 +6,12 @@
 <title>防伪查询</title>
 <style>
 * {margin:0; padding:0; box-sizing:border-box;}
-body {
-    background:#f3f3f3;
-    font-family:"微软雅黑",sans-serif;
-}
+body {background:#f3f3f3; font-family:"微软雅黑",sans-serif;}
+
 /* 顶部空白缩小 */
-.header {
-    text-align:center;
-    padding:10px 0;
-}
-.header h1 {
-    font-size:20px;
-    margin-bottom:4px;
-}
-.header .domain {
-    font-size:13px;
-    color:#666;
-}
+.header {text-align:center; padding:10px 0;}
+.header h1 {font-size:20px; margin-bottom:4px;}
+.header .domain {font-size:13px; color:#666;}
 
 /* 卡片紧凑 */
 .card {
@@ -31,10 +20,7 @@ body {
     border-radius:10px;
     padding:20px 15px;
 }
-.card h2 {
-    font-size:17px;
-    margin-bottom:6px;
-}
+.card h2 {font-size:17px; margin-bottom:6px;}
 /* 英文缩小、紧凑 */
 .card .en {
     font-size:11px;
@@ -64,10 +50,7 @@ body {
     padding:5px;
 }
 
-.tip-section h3 {
-    font-size:16px;
-    margin-bottom:10px;
-}
+.tip-section h3 {font-size:16px; margin-bottom:10px;}
 .tip-section .item {
     display:flex;
     align-items:center;
@@ -97,14 +80,8 @@ body {
     padding:25px 20px;
     display:none;
 }
-.result-card h3 {
-    font-size:16px;
-    margin-bottom:10px;
-}
-#showCode {
-    font-size:20px;
-    margin-bottom:15px;
-}
+.result-card h3 {font-size:16px; margin-bottom:10px;}
+#showCode {font-size:20px; margin-bottom:15px;}
 #resultText {
     font-size:15px;
     line-height:1.8;
@@ -126,11 +103,7 @@ body {
     border-radius:8px;
     text-align:center;
 }
-.modal .ok {
-    margin-top:15px;
-    color:#0066ff;
-    cursor:pointer;
-}
+.modal .ok {margin-top:15px; color:#0066ff; cursor:pointer;}
 </style>
 </head>
 
@@ -175,7 +148,11 @@ function $(id){return document.getElementById(id);}
 function closeModal(){$("modal").style.display="none";}
 function showMsg(t){$("msg").innerText=t; $("modal").style.display="flex";}
 
+// 强制读取数据库，确保一定读到
 let db = JSON.parse(localStorage.getItem("antiFakeDB") || "{}");
+console.log("当前数据库：", db);
+
+// 只读取不自动填充
 let qrCode = new URLSearchParams(location.search).get("code");
 
 $("submitBtn").onclick = function(){
@@ -186,6 +163,9 @@ $("submitBtn").onclick = function(){
         return;
     }
 
+    // 强制刷新数据库（最关键！）
+    db = JSON.parse(localStorage.getItem("antiFakeDB") || "{}");
+
     if(!db[input]){
         $("queryCard").style.display = "none";
         $("resultCard").style.display = "block";
@@ -194,10 +174,9 @@ $("submitBtn").onclick = function(){
         return;
     }
 
+    // 一定能走到这里
     db[input].queryCount++;
-    if(db[input].status === "new"){
-        db[input].status = "used";
-    }
+    if(db[input].status === "new") db[input].status = "used";
     localStorage.setItem("antiFakeDB", JSON.stringify(db));
 
     $("queryCard").style.display = "none";
