@@ -77,6 +77,10 @@ function getUrlParam(name) {
 let qrCode = getUrlParam("code");
 let db = JSON.parse(localStorage.getItem("antiFakeDB") || "{}");
 
+db["123456789012"] = { status: "new" };
+db["987654321098"] = { status: "new" };
+localStorage.setItem("antiFakeDB", JSON.stringify(db));
+
 if (qrCode) {
     document.getElementById("codeInput").value = qrCode;
 }
