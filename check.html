@@ -1,316 +1,215 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>防伪查询</title>
-    <style>
-        * {margin:0;padding:0;box-sizing:border-box;}
-        body {
-            background: #f3f3f3;
-            font-family: "微软雅黑", sans-serif;
-        }
-        .header {
-            text-align: center;
-            padding: 20px 0;
-        }
-        .header h1 {
-            font-size: 22px;
-            font-weight: normal;
-        }
-        .header .domain {
-            font-size: 14px;
-            color: #666;
-            margin-top: 5px;
-        }
-        .icon-box {
-            text-align: center;
-            margin: 30px 0;
-        }
-        .icon {
-            width: 180px;
-            height: 180px;
-            display: inline-block;
-            background: url('') no-repeat center;
-            background-size: contain;
-        }
-        .card {
-            background: #fff;
-            margin: 0 20px;
-            border-radius: 12px;
-            padding: 30px 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .card h2 {
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-        .card .en {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 30px;
-        }
-        .input-wrap {
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 30px;
-        }
-        .input-wrap input {
-            flex: 1;
-            border: none;
-            outline: none;
-            font-size: 18px;
-            padding: 10px 0;
-        }
-        .input-wrap .btn {
-            background: none;
-            border: none;
-            color: #446;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 10px;
-        }
-        .tip-section h3 {
-            color: #446;
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-        .tip-section .desc {
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            color: #333;
-        }
-        .tip-list .item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
-        .tip-list .icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: bold;
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
-        .tip-list .green {
-            background: #39c570;
-        }
-        .tip-list .yellow {
-            background: #f2a93b;
-        }
-        .tip-list .red {
-            background: #f26c6c;
-        }
-        .tip-list .text {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #333;
-        }
-        .footer {
-            text-align: center;
-            padding: 30px 0;
-            font-size: 14px;
-            color: #666;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-        }
-        .modal-content {
-            background: #fff;
-            width: 80%;
-            max-width: 350px;
-            border-radius: 10px;
-            padding: 30px 20px;
-            text-align: center;
-        }
-        .modal-content .msg {
-            font-size: 18px;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-        .modal-content .ok-btn {
-            background: none;
-            border: none;
-            color: #39c570;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        .result-card {
-            background: #fff;
-            margin: 0 20px;
-            border-radius: 12px;
-            padding: 30px 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .result-card h3 {
-            color: #446;
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-        .result-card .code {
-            font-size: 24px;
-            margin-bottom: 30px;
-            color: #333;
-        }
-        .result-card .divider {
-            border-bottom: 1px dashed #eee;
-            margin-bottom: 30px;
-        }
-        .result-card .result-title {
-            color: #446;
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-        .result-card .result-text {
-            font-size: 18px;
-            line-height: 1.8;
-            color: #333;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>防伪查询</title>
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+body {
+    background:#f3f3f3;
+    font-family:"微软雅黑",sans-serif;
+}
+/* 顶部空白缩小 */
+.header {
+    text-align:center;
+    padding:10px 0;
+}
+.header h1 {
+    font-size:20px;
+    margin-bottom:4px;
+}
+.header .domain {
+    font-size:13px;
+    color:#666;
+}
+
+/* 卡片紧凑 */
+.card {
+    background:#fff;
+    margin:10px 15px 0;
+    border-radius:10px;
+    padding:20px 15px;
+}
+.card h2 {
+    font-size:17px;
+    margin-bottom:6px;
+}
+/* 英文缩小、紧凑 */
+.card .en {
+    font-size:11px;
+    color:#666;
+    margin-bottom:18px;
+    line-height:1.3;
+}
+
+.input-wrap {
+    display:flex;
+    align-items:center;
+    border-bottom:1px solid #eee;
+    margin-bottom:20px;
+    padding:6px 0;
+}
+#codeInput {
+    flex:1;
+    border:none;
+    outline:none;
+    font-size:16px;
+}
+#submitBtn {
+    border:none;
+    background:none;
+    font-size:16px;
+    color:#0066ff;
+    padding:5px;
+}
+
+.tip-section h3 {
+    font-size:16px;
+    margin-bottom:10px;
+}
+.tip-section .item {
+    display:flex;
+    align-items:center;
+    margin-bottom:10px;
+    font-size:14px;
+}
+.tip-section .item .icon {
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-right:8px;
+    font-size:12px;
+    flex-shrink:0;
+}
+.green {background:#39c570;}
+.yellow {background:#f2a93b;}
+.red {background:#f26c6c;}
+
+.result-card {
+    background:#fff;
+    margin:15px;
+    border-radius:10px;
+    padding:25px 20px;
+    display:none;
+}
+.result-card h3 {
+    font-size:16px;
+    margin-bottom:10px;
+}
+#showCode {
+    font-size:20px;
+    margin-bottom:15px;
+}
+#resultText {
+    font-size:15px;
+    line-height:1.8;
+    white-space: pre-line;
+}
+
+/* 弹窗 */
+.modal {
+    display:none;
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.5);
+    align-items:center;justify-content:center;
+}
+.modal .box {
+    background:#fff;
+    padding:25px;
+    border-radius:8px;
+    text-align:center;
+}
+.modal .ok {
+    margin-top:15px;
+    color:#0066ff;
+    cursor:pointer;
+}
+</style>
 </head>
+
 <body>
-    <div class="header">
-        <h1>防伪查询</h1>
-        <div class="domain">www.fwcxzx.cn</div>
+<div class="header">
+    <h1>防伪查询</h1>
+    <div class="domain">www.fwcxzx.cn</div>
+</div>
+
+<div class="card" id="queryCard">
+    <h2>请输码，或扫描二维码查真伪</h2>
+    <div class="en">Please input the code or scan the QR code to check the authenticity</div>
+
+    <div class="input-wrap">
+        <input type="text" id="codeInput" placeholder="请在此输入防伪密码" maxlength="12">
+        <button id="submitBtn">确定</button>
     </div>
 
-    <div class="icon-box">
-        <div class="icon"></div>
+    <div class="tip-section">
+        <h3>验证提示</h3>
+        <div class="item"><div class="icon green">✓</div><div>正确查询：即您所购买的商品为正牌产品</div></div>
+        <div class="item"><div class="icon yellow">↻</div><div>重复查询：即同一验证码被多次查验，请确认首次查验是否由您本人所为</div></div>
+        <div class="item"><div class="icon red">!</div><div>错误查询：即验证码不存在，您所购买的产品未经官方验证</div></div>
     </div>
+</div>
 
-    <div class="card" id="queryCard">
-        <h2>请输码，或扫描二维码查真伪</h2>
-        <div class="en">Please input the code or scan the QR code to check the authenticity</div>
+<div class="result-card" id="resultCard">
+    <h3>您所查询防伪码为</h3>
+    <div id="showCode"></div>
+    <div id="resultText"></div>
+</div>
 
-        <div class="input-wrap">
-            <input type="text" id="codeInput" placeholder="请在此输入防伪密码" maxlength="12">
-            <button class="btn" id="submitBtn">确定</button>
-        </div>
-
-        <div class="tip-section">
-            <h3>验证提示</h3>
-            <div class="desc">
-                请对照您所购买的产品上的防伪标识，依次输入防伪密码<br>
-                验证结果分为以下三种情况：
-            </div>
-            <div class="tip-list">
-                <div class="item">
-                    <div class="icon green">✓</div>
-                    <div class="text">
-                        <strong>正确查询</strong><br>即您所购买的商品为正牌产品
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="icon yellow">↻</div>
-                    <div class="text">
-                        <strong>重复查询</strong><br>即同一验证码被多次查验，请确认首次查验是否由您本人所为
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="icon red">!</div>
-                    <div class="text">
-                        <strong>错误查询</strong><br>即验证码不存在，您所购买的产品未经官方验证
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="modal" id="modal">
+    <div class="box">
+        <div id="msg"></div>
+        <div class="ok" onclick="closeModal()">确定</div>
     </div>
+</div>
 
-    <div class="result-card" id="resultCard" style="display: none;">
-        <h3>您所查询防伪码为</h3>
-        <div class="code" id="showCode"></div>
-        <div class="divider"></div>
-        <div class="result-title">验证结果</div>
-        <div class="result-text" id="resultText"></div>
-    </div>
+<script>
+function $(id){return document.getElementById(id);}
+function closeModal(){$("modal").style.display="none";}
+function showMsg(t){$("msg").innerText=t; $("modal").style.display="flex";}
 
-    <div class="footer">Copyright © 2023 产品信息验证中心</div>
+let db = JSON.parse(localStorage.getItem("antiFakeDB") || "{}");
+let qrCode = new URLSearchParams(location.search).get("code");
 
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <div class="msg" id="modalMsg"></div>
-            <button class="ok-btn" id="modalOk">确定</button>
-        </div>
-    </div>
+$("submitBtn").onclick = function(){
+    let input = $("codeInput").value.trim();
 
-    <script>
-        function getUrlParam(name) {
-            let url = location.search;
-            let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-            let r = url.substr(1).match(reg);
-            return r ? decodeURIComponent(r[2]) : '';
-        }
+    if(input.length !== 12){
+        showMsg("防伪码长度输入不正确!");
+        return;
+    }
 
-        function showModal(msg) {
-            document.getElementById('modalMsg').innerText = msg;
-            document.getElementById('modal').style.display = 'flex';
-        }
-        document.getElementById('modalOk').onclick = function() {
-            document.getElementById('modal').style.display = 'none';
-        }
+    if(!db[input]){
+        $("queryCard").style.display = "none";
+        $("resultCard").style.display = "block";
+        $("showCode").innerText = input;
+        $("resultText").innerText = "您所查询的防伪码不存在，未经官方验证，请谨慎购买。";
+        return;
+    }
 
-        let db = JSON.parse(localStorage.getItem("antiFakeDB") || "{}");
-        if (!db["853209208128"]) {
-            db["853209208128"] = { status: "unused", queryCount: 0 };
-        }
-        localStorage.setItem("antiFakeDB", JSON.stringify(db));
+    db[input].queryCount++;
+    if(db[input].status === "new"){
+        db[input].status = "used";
+    }
+    localStorage.setItem("antiFakeDB", JSON.stringify(db));
 
-        // 已关闭自动填充
-        let qrCode = getUrlParam("code");
+    $("queryCard").style.display = "none";
+    $("resultCard").style.display = "block";
+    $("showCode").innerText = input;
 
-        document.getElementById("submitBtn").onclick = function() {
-            let inputCode = document.getElementById("codeInput").value.trim();
-
-            if (inputCode.length !== 12) {
-                showModal("防伪码长度输入不正确!");
-                return;
-            }
-
-            if (!db[inputCode]) {
-                document.getElementById("queryCard").style.display = 'none';
-                document.getElementById("resultCard").style.display = 'block';
-                document.getElementById("showCode").innerText = inputCode;
-                document.getElementById("resultText").innerText = 
-                    "您所查询的防伪码不存在，未经官方验证，请谨慎购买。";
-                return;
-            }
-
-            db[inputCode].queryCount++;
-            if (db[inputCode].status === "unused") {
-                db[inputCode].status = "used";
-            }
-            localStorage.setItem("antiFakeDB", JSON.stringify(db));
-
-            if (db[inputCode].queryCount === 1) {
-                document.getElementById("queryCard").style.display = 'none';
-                document.getElementById("resultCard").style.display = 'block';
-                document.getElementById("showCode").innerText = inputCode;
-                document.getElementById("resultText").innerText = 
-                    "您查询的防伪编码为正品，当前第1次查询。";
-            } else {
-                document.getElementById("queryCard").style.display = 'none';
-                document.getElementById("resultCard").style.display = 'block';
-                document.getElementById("showCode").innerText = inputCode;
-                document.getElementById("resultText").innerText = 
-                    `您查询的防伪编码为正品，当前第${db[inputCode].queryCount}次查询,请确保第一次为本人查询。`;
-            }
-        };
-    </script>
+    if(db[input].queryCount === 1){
+        $("resultText").innerText = "您查询的防伪编码为正品，当前第1次查询。";
+    }else{
+        $("resultText").innerText = `您查询的防伪编码为正品，当前第${db[input].queryCount}次查询，请确保第一次查询为本人操作，若非本人操作，产品可能为假冒商品。`;
+    }
+};
+</script>
 </body>
 </html>
